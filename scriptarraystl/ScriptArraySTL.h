@@ -206,18 +206,39 @@ public:
 		asIObjectType* t = engine->GetObjectTypeById(engine->GetTypeIdByDecl(declaration));
 		if(t == NULL) return -1; // the type doesn't exist
 
-		m_as_array_ptr = new CScriptArray(init_length, t);
+		m_as_array_ptr = new TArrayClass(init_length, t);
 
 		return 0;
 	}
 
 	// returns a pointer to an array class that can be used in an AS script
-	TArrayClass *GetRef()
+	TArrayClass *GetRef(bool inc_ref_count = false, bool release_self = false)
 	{
 #ifdef ASSERT_IF_UNITIALIZED
 		assert((m_as_array_ptr != NULL) && "InitArray() must be called before use.");
 #endif
-		return m_as_array_ptr;
+		if(inc_ref_count)
+		{
+			// increments the reference count
+			// this is useful if we want to return a reference that can
+			// persist in AngelScript even after this object has been destroyed
+			m_as_array_ptr->AddRef();
+		}
+
+		if(release_self)
+		{
+			// this will disconnect the AngelScript Array from this CScriptArraySTL object
+			// useful when this object is only used for setting up an array with
+			// initial data and then passing the array to AngelScript
+			TArrayClass *rval = m_as_array_ptr;
+			m_as_array_ptr = NULL;
+
+			return rval;
+		}
+		else
+		{
+			return m_as_array_ptr;
+		}
 	}
 
 	// Releases a reference to the array. After this is called, this class can
