@@ -6,8 +6,7 @@ This software was written to allow C++ programs that use AngelScript to be able 
 To use the sample provided, the project directories should work if you copy the "scriptarraystl" folder to the AngelScript SDK add_on folder. Only ScriptArraySTL.h needs to be included as well as the CScriptArray add-on to use this.
 
 For more information:
-Blogs: http://squaredprogramming.blogspot.com/
-       www.gamedev.net/blog/1670-squaredds-journal/
+website: www.squaredprogramming.com
 Email: squaredprogramming@gmail.com
 
 License
